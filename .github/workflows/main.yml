@@ -1,0 +1,31 @@
+name: Deploy Static Content
+
+on:
+  # main 브랜치에 코드가 푸시될 때마다 실행
+  push:
+    branches: ["main"]
+
+# GitHub Pages에 배포할 수 있는 권한 설정
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 # 내 코드를 가상 컴퓨터로 가져옴
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4 # Pages 환경 설정
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.' # HTML 파일이 있는 폴더 위치 (루트라면 '.')
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # 실제로 서버에 올림
